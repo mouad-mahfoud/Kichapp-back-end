@@ -70,6 +70,21 @@ services:
         published: 5432
         protocol: tcp
 
+  db-mongodb:
+      # In production, you may want to use a managed database service
+      image: mongo
+      environment:
+          - MONGO_INITDB_DATABASE=kichapp_db
+          - MONGO_INITDB_ROOT_USERNAME=kickapp_user
+          # You should definitely change the password in production
+          - MONGO_INITDB_ROOT_PASSWORD=!kichapp!
+      volumes:
+          - db-data:/var/lib/mongodb/data:rw
+          # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+          # - ./docker/db/data:/var/lib/mongodb/data:rw
+      ports:
+          - "27017:27017"
+
   mercure:
     image: dunglas/mercure
     environment:
