@@ -22,7 +22,3 @@ app.use('/user', authRoute)
 
 // start server
 app.listen(process.env.PORT, () => console.log(`App listening at http://localhost:${process.env.PORT}`))
-
-// ! note: u need 3 variables in your .env to run the server, just create it in the root of the project and add: DB & PORT & JWT_SECRET
-// ! remove this comment once done
-// ! and btw install the extension "better comments" on vs code to get nice colors on the comments ;)

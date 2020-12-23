@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
         minLength: 6,
         maxlength: 1024
     },
+    role: {
+        type: String,
+        required: true,
+        enum: ['admin', 'cooker', 'user']
+    },
     tokens: [{
         token: {
             type: String,
@@ -31,7 +36,7 @@ const userSchema = new mongoose.Schema({
 })
 
 userSchema.methods.generateAuthToken = async function () {
-    const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET)
+    const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET,  { expiresIn: process.env.JWT_TIMEOUT_DURATION })
     this.tokens.push({ token })
     await this.save()
 
