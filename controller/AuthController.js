@@ -3,17 +3,19 @@ const User = require('../model/User')
 
 const register = async (req, res) => {
     const data = req.body
-    
-	const user = new User({
+    let user = {
 		name: data.name,
 		email: data.email,
-		password: data.password
-	})
+		password: data.password,
+		role: data.role,
+	}
+	const userModel = new User(user)
 
 	try {
-		await user.save()
-		const token = await user.generateAuthToken()
-		res.status(201).send({ token })
+        await userModel.save()
+        const token = await userModel.generateAuthToken()
+        delete user.password
+		res.status(201).send({...user, token})
 	} catch (error) {
 		// TODO we should filter the error we send back
 		res.status(400).send(error.message)
