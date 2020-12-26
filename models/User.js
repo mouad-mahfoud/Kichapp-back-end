@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true,
-        enum: ['admin', 'cooker', 'user', "restaurant", "bakery"]
+        enum: ['admin', 'user']
     },
     tokens: [{
         token: {
@@ -65,7 +65,6 @@ userSchema.pre('save', async function (next) {
         this.password = await bcrypt.hash(this.password, 8) // 8 is the number of times to hash the password, a bigger number means more security but also means more execution time
     }
 
-    // always call next at the end of every middleware
     next()
 })
 

@@ -1,4 +1,5 @@
-const User = require('../model/User')
+const { EMSGSIZE } = require('constants')
+const User = require('../models/User')
 
 
 const register = async (req, res) => {
@@ -15,7 +16,7 @@ const register = async (req, res) => {
         await userModel.save()
         const token = await userModel.generateAuthToken()
         delete user.password
-		res.status(201).send({...user, token})
+		res.status(201).send({...user, token })
 	} catch (error) {
 		// TODO we should filter the error we send back
 		res.status(400).send(error.message)
@@ -35,8 +36,20 @@ const login = async (req, res) => {
 	}
 }
 
+const logout = async (req, res) => {
+	try {
+		req.user.tokens = req.user.tokens.filter(token => token.token !== req.token)
+		await req.user.save()
+
+		res.send('logged out')
+	} catch (error) {
+		console.log(error)
+		res.status(500).send('error')
+	}
+}
 
 module.exports = {
     register,
-    login
+	login,
+	logout
 }
